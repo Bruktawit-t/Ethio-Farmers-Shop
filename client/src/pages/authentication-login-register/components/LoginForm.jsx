@@ -49,12 +49,13 @@ const LoginForm = ({ currentLanguage, onAuthSuccess }) => {
 
       if (result.success) {
         localStorage.setItem('currentLanguage', currentLanguage);
+        localStorage.setItem('userName', result.user.full_name || result.user.fullName || 'User');
         onAuthSuccess(result.user.role);
 
         if (result.user.role === 'farmer') {
           navigate('/dashboard-farmer-home');
         } else {
-          navigate('/dashboard-buyer-home');
+          navigate('/dashboard-buyer-home'); 
         }
       } else {
         setErrors({

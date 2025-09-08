@@ -90,8 +90,20 @@ const RegisterForm = ({ currentLanguage, onAuthSuccess }) => {
 
       if (result.success) {
         localStorage.setItem('currentLanguage', currentLanguage);
+        
+        // Set authentication state immediately
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', formData.role);
+        localStorage.setItem('userName', formData.fullName);
+        
         onAuthSuccess(formData.role);
-        navigate(formData.role === 'farmer' ? '/dashboard-farmer-home' : '/browse-listings-buyer-home');
+        
+        // Navigate directly to role-based dashboard
+        if (formData.role === 'farmer') {
+          navigate('/dashboard-farmer-home');
+        } else {
+          navigate('/dashboard-buyer-home');
+        }
       } else {
         setErrors({
           general: result.error || (currentLanguage === 'am' ? 'ምዝገባ አልተሳካም' : 'Registration failed')

@@ -81,7 +81,21 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await authService.register(userData);
-      return { success: true, data: response };
+      
+      if (response.user) {
+        // Set user data immediately after successful registration
+        setUser(response.user);
+        setIsAuthenticated(true);
+        
+        // Store in localStorage
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', response.user.role);
+        localStorage.setItem('userName', response.user.full_name || response.user.fullName || 'User');
+        
+        return { success: true, user: response.user };
+      } else {
+        return { success: true, data: response };
+      }
     } catch (error) {
       console.error('Registration error:', error);
       return {

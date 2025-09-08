@@ -19,9 +19,14 @@ import { Navigate } from "react-router-dom";
 const RoleRedirect = () => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
   const userRole = localStorage.getItem('userRole');
+  
   if (!isAuthenticated) return <AuthenticationPage />;
+  
   if (userRole === 'farmer') return <Navigate to="/dashboard-farmer-home" replace />;
-  return <Navigate to="/dashboard-buyer-home" replace />;
+  if (userRole === 'buyer') return <Navigate to="/dashboard-buyer-home" replace />;
+  
+  // Fallback if role is not set properly
+  return <AuthenticationPage />;
 };
 
 const Routes = () => {
